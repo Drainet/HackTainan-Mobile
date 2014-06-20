@@ -10,6 +10,7 @@ import com.android.volley.toolbox.Volley;
 public class HackTainanApplication extends Application{
 	private static RequestQueue requestQueue;
 	private static ImageLoader imageLoader;
+	private static String userId;
 	
 	@Override
 	public void onCreate() {
@@ -17,6 +18,7 @@ public class HackTainanApplication extends Application{
 		requestQueue = Volley.newRequestQueue(getApplicationContext());
 		imageLoader = new ImageLoader(Volley.newRequestQueue(getApplicationContext()), new BitmapLruCache());
 		imageLoader.setBatchedResponseDelay(0);
+		
 	}
 
 	public static RequestQueue getRequestQueue() {
@@ -25,6 +27,14 @@ public class HackTainanApplication extends Application{
 	
 	public static ImageLoader getImageLoader()	 {
 		return imageLoader;
+	}
+
+	public static String getUserId() {
+		return userId;
+	}
+
+	public static void setUserId(String userId) {
+		HackTainanApplication.userId = userId;
 	}
 
 }

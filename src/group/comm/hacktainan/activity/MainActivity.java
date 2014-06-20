@@ -17,6 +17,7 @@ import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -55,28 +56,7 @@ public class MainActivity extends Activity
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
-        // start Facebook Login
-	    Session.openActiveSession(this, true, new Session.StatusCallback() {
-	
-	      // callback when session changes state
-	      @Override
-	      public void call(Session session, SessionState state, Exception exception) {
-	        if (session.isOpened()) {
-	
-	          // make request to the /me API
-	          Request.newMeRequest(session, new Request.GraphUserCallback() {
-	
-	            // callback after Graph API response with user object
-	            @Override
-	            public void onCompleted(GraphUser user, Response response) {
-	              if (user != null) {
-//	            	  HackTainanApplication.se
-	              }
-	            }
-	          }).executeAsync();
-	        }
-	      }
-	    });
+      
     }
 
     @Override
@@ -176,5 +156,7 @@ public class MainActivity extends Activity
                     getArguments().getInt(ARG_SECTION_NUMBER));
         }
     }
+    
+
 
 }
