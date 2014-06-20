@@ -74,6 +74,10 @@ public class MainActivity extends Activity
                 public void onCompleted(GraphUser user, Response response) {
                   if (user != null) {
                   }
+                  Session session = Session.getActiveSession();
+                  session.getAccessToken();
+                  user.getId();
+                  
                 }
               }).executeAsync();
             }
