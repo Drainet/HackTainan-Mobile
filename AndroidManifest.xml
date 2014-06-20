@@ -3,7 +3,8 @@
     package="group.comm.hacktainan"
     android:versionCode="1"
     android:versionName="1.0" >
-    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <uses-sdk
         android:minSdkVersion="14"
@@ -27,8 +28,14 @@
             android:name="group.comm.hacktainan.activity.MapActivity"
             android:label="@string/title_activity_map" >
         </activity>
+        <activity
+            android:name="com.facebook.LoginActivity"
+            android:label="@string/app_name" >
+        </activity>
+
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/app_id" />
     </application>
-    <meta-data android:value="@string/app_id" android:name="com.facebook.sdk.ApplicationId"/>
-    <activity android:name="com.facebook.LoginActivity" android:label="@string/app_name"></activity>
 
 </manifest>
