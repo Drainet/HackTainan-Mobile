@@ -6,6 +6,7 @@ import com.facebook.Session;
 import com.facebook.SessionState;
 import com.facebook.model.GraphUser;
 
+
 import group.comm.hacktainan.R;
 import group.comm.hacktainan.R.id;
 import group.comm.hacktainan.R.layout;
@@ -26,9 +27,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.support.v4.widget.DrawerLayout;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends Activity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -85,8 +89,24 @@ public class MainActivity extends Activity
     public void restoreActionBar() {
         ActionBar actionBar = getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-        actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setTitle(mTitle);
+        actionBar.setDisplayShowTitleEnabled(false);
+        actionBar.setDisplayShowCustomEnabled(true);
+        ViewGroup view = (ViewGroup) LayoutInflater.from(this).inflate(R.layout.actionbar_view, null);
+        actionBar.setCustomView(view);
+        ImageView image = (ImageView) view.findViewById(R.id.imageView1);
+        
+        OnClickListener clickListener = new OnClickListener() {
+            public void onClick(View v) {
+            			//Toast.(this, "Example action.", Toast.LENGTH_SHORT).show();
+            			//Toast.makeText(MainActivity.this, "Example action.", Toast.LENGTH_SHORT).show();
+		            	Intent intent = new Intent();
+		            	intent.setClass(MainActivity.this, MapActivity.class);
+		            	startActivity(intent); 
+		            	//MainActivity.this.finish(); 
+                   }
+        };
+        
+        image.setOnClickListener(clickListener);
     }
 
 
