@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="translucent">#80000000</color>
+    <color name="action_bar_color">#cccccc</color>
+    <color name="app_default_background">#FFFFFF</color>
+    <color name="detail_background">#333333</color>
+    <color name="list_pressed">#F9FCC5</color>
+    <color name="listback">#92FC86</color>
+    <color name="actionbar">#cccccc</color>
+    <color name="background">#24AAA0 </color>
+</resources>

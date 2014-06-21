@@ -18,12 +18,11 @@ import com.facebook.model.GraphUser;
 
 import group.comm.hacktainan.R;
 import group.comm.hacktainan.application.HackTainanApplication;
-
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
-
+import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
@@ -45,7 +44,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
@@ -71,7 +69,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends Activity
+@SuppressLint("ResourceAsColor") public class MainActivity extends Activity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
     /**
@@ -93,7 +91,7 @@ public class MainActivity extends Activity
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getFragmentManager().findFragmentById(R.id.navigation_drawer);
         mTitle = getTitle();
-
+        ((DrawerLayout) findViewById(R.id.drawer_layout)).setScrimColor(android.R.color.transparent);
         // Set up the drawer.
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
@@ -183,7 +181,8 @@ public class MainActivity extends Activity
         ViewGroup view = (ViewGroup) LayoutInflater.from(this).inflate(R.layout.actionbar_view, null);
         actionBar.setCustomView(view);
         ImageView image = (ImageView) view.findViewById(R.id.imageView1);
-        
+        image.setImageResource(R.drawable.starquest_64);
+        actionBar.setIcon(android.R.color.transparent);
         OnClickListener clickListener = new OnClickListener() {
             public void onClick(View v) {
             			//Toast.(this, "Example action.", Toast.LENGTH_SHORT).show();
