@@ -27,7 +27,7 @@ public class DrawerAdapter extends BaseAdapter{
 	@Override
 	public int getCount() {
 		// TODO Auto-generated method stub
-		return 4;
+		return 3;
 	}
 
 	@Override
@@ -52,13 +52,13 @@ public class DrawerAdapter extends BaseAdapter{
 		
 		switch(position){
         case 0:
-        	image.setImageResource(R.drawable.ic_launcher);
+        	image.setImageResource(R.drawable.travelwall_64);
             break;
         case 1:
-        	image.setImageResource(R.drawable.ic_launcher);
+        	image.setImageResource(R.drawable.friend_64);
             break;
         case 2:
-        	image.setImageResource(R.drawable.ic_launcher);
+        	image.setImageResource(R.drawable.settings_64);
             break;
         case 3:
         	image.setImageResource(R.drawable.ic_launcher);

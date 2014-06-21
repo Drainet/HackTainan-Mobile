@@ -13,5 +13,6 @@
     <string name="hello_world">Hello world!</string>
     <string name="app_id">1482798951956155</string>
     <string name="title_activity_login">LoginActivity</string>
+    <string name="title_activity_camera">CameraActivity</string>
 
 </resources>

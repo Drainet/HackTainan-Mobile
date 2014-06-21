@@ -1,0 +1,10 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="group.comm.hacktainan.CameraActivity" >
+
+    <item
+        android:id="@+id/action_confirm"
+        android:icon="@drawable/ok_64"
+        android:showAsAction="always"/>
+
+</menu>
