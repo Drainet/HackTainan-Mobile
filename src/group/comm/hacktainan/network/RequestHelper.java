@@ -20,4 +20,5 @@ public class RequestHelper {
 						errorListener);
 		HackTainanApplication.getRequestQueue().add(request);
 	}
+	
 }

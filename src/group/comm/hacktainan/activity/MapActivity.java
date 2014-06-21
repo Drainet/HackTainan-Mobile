@@ -1,11 +1,7 @@
 package group.comm.hacktainan.activity;
 
 import group.comm.hacktainan.R;
-import group.comm.hacktainan.R.id;
-import group.comm.hacktainan.R.layout;
-import group.comm.hacktainan.R.menu;
 import android.app.Activity;
-import android.app.ActionBar;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,7 +9,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.os.Build;
 
 public class MapActivity extends Activity {
 

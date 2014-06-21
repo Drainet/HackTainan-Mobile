@@ -4,7 +4,6 @@ import java.io.UnsupportedEncodingException;
 import java.util.LinkedList;
 import java.util.Map;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.android.volley.AuthFailureError;
@@ -12,9 +11,9 @@ import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
 
 public abstract class ObjectListRequest<T> extends Request<LinkedList<T>>{
@@ -59,9 +58,7 @@ public abstract class ObjectListRequest<T> extends Request<LinkedList<T>>{
 			}else
 				data = new String(response.data,"UTF-8");
 			JSONObject json = new JSONObject(data);
-			JSONArray jsary =json.getJSONArray("Ary");
-			LinkedList<T> tList = processJSON(jsary);
-			
+			LinkedList<T> tList = processJSON(json);
 			
 			return Response.success(tList, HttpHeaderParser.parseCacheHeaders(response));
 		} catch (UnsupportedEncodingException e) {
@@ -71,6 +68,6 @@ public abstract class ObjectListRequest<T> extends Request<LinkedList<T>>{
 		}
 	}
 
-	abstract LinkedList<T> processJSON(JSONArray jsary);
+	abstract LinkedList<T> processJSON(JSONObject json);
 
 }

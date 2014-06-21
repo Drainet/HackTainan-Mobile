@@ -1,5 +1,8 @@
 package com.comm.hacktainan.ui;
 
+import group.comm.hacktainan.R;
+import group.comm.hacktainan.data.Status;
+
 import java.util.LinkedList;
 
 import android.content.Context;
@@ -7,11 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import group.comm.hacktainan.data.Status;
-import group.comm.hacktainan.R;
 
 public class StatusListAdapter extends BaseAdapter{
 	private LayoutInflater inflater;

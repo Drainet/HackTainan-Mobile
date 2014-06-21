@@ -6,11 +6,13 @@ import android.app.Application;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
+import com.facebook.model.GraphUser;
 
 public class HackTainanApplication extends Application{
 	private static RequestQueue requestQueue;
 	private static ImageLoader imageLoader;
 	private static String userId;
+	private static GraphUser user;
 	
 	@Override
 	public void onCreate() {
@@ -35,6 +37,14 @@ public class HackTainanApplication extends Application{
 
 	public static void setUserId(String userId) {
 		HackTainanApplication.userId = userId;
+	}
+
+	public static GraphUser getUser() {
+		return user;
+	}
+
+	public static void setUser(GraphUser user) {
+		HackTainanApplication.user = user;
 	}
 
 }

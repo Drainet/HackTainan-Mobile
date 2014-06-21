@@ -19,11 +19,13 @@ public class StatusListRequest extends ObjectListRequest<Status>{
 	}
 
 	@Override
-	LinkedList<Status> processJSON(JSONArray jsary) {
+	LinkedList<Status> processJSON(JSONObject jsonObject) {
 		LinkedList<Status> statusList = new LinkedList<Status>();
-		for(int i = 0;i<jsary.length();i++){
-			JSONObject js;
-			try {
+		try {
+			JSONArray jsary = jsonObject.getJSONArray("ary");
+			for(int i = 0;i<jsary.length();i++){
+				JSONObject js;
+
 				js = (JSONObject) jsary.get(i);
 				Status status = new Status(
 						js.getString("name"),
@@ -33,11 +35,12 @@ public class StatusListRequest extends ObjectListRequest<Status>{
 						js.getInt("goodNumber")
 						);
 				statusList.add(status);
-			} catch (JSONException e) {
-				e.printStackTrace();
 			}
-
+		} catch (JSONException e) {
+			e.printStackTrace();
 		}
+
+
 		return statusList;
 	}
 
