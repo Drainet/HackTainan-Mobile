@@ -120,7 +120,15 @@ public class CameraActivity extends Activity {
 			
 
 		
-				iu.execute(fileUri.getPath());
+			try {
+				iu.execute(fileUri.getPath()).get();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ExecutionException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 	
 			this.finish();
 			return true;

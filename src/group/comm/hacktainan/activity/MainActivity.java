@@ -4,6 +4,7 @@ package group.comm.hacktainan.activity;
 import group.comm.hacktainan.R;
 import group.comm.hacktainan.application.HackTainanApplication;
 import group.comm.hacktainan.data.Status;
+import group.comm.hacktainan.mywidget.RoundedImageView;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -142,6 +143,7 @@ implements NavigationDrawerFragment.NavigationDrawerCallbacks {
     @Override
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
+    	
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
@@ -244,6 +246,8 @@ implements NavigationDrawerFragment.NavigationDrawerCallbacks {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
+        	
+        	
         	LinkedList<Status> statusList = new LinkedList<Status>();
         	statusList.add(new Status(
         			"ª¯ª¯",
@@ -270,9 +274,30 @@ implements NavigationDrawerFragment.NavigationDrawerCallbacks {
         			15,
         			10));
         	StatusListAdapter adapter = new StatusListAdapter(getActivity(),statusList);
-            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+        	View rootView;
+        	if(getArguments().getInt(ARG_SECTION_NUMBER)==1){
+        		rootView = inflater.inflate(R.layout.homepage, container, false);
+        		
+        	}else{
+        		rootView = inflater.inflate(R.layout.fragment_main, container, false);
+        	}
+            
             ListView listview = (ListView) rootView.findViewById(R.id.listView1);
-            listview.setAdapter(adapter);
+            switch(getArguments().getInt(ARG_SECTION_NUMBER)){
+            
+            case 2:
+            	listview.setAdapter(adapter);
+                break;
+            case 3:
+            	listview.setAdapter(adapter);
+                break;
+            case 4:
+                
+                break;
+            		
+            	
+            }
+            
             //TextView textView = (TextView) rootView.findViewById(R.id.section_label);
             //textView.setText(Integer.toString(getArguments().getInt(ARG_SECTION_NUMBER)));
             return rootView;

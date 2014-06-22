@@ -27,7 +27,7 @@ public class DrawerAdapter extends BaseAdapter{
 	@Override
 	public int getCount() {
 		// TODO Auto-generated method stub
-		return 3;
+		return 4;
 	}
 
 	@Override
@@ -51,16 +51,19 @@ public class DrawerAdapter extends BaseAdapter{
 		ImageView image = (ImageView) convertView.findViewById(R.id.ImageView_icon);
 		
 		switch(position){
-        case 0:
-        	image.setImageResource(R.drawable.travelwall_64);
+		case 0:
+        	//image.setImageResource(android.R.color.transparent);
             break;
         case 1:
-        	image.setImageResource(R.drawable.friend_64);
+        	image.setImageResource(R.drawable.travelwall_64);
             break;
         case 2:
-        	image.setImageResource(R.drawable.settings_64);
+        	image.setImageResource(R.drawable.friend_64);
             break;
         case 3:
+        	image.setImageResource(R.drawable.settings_64);
+            break;
+        case 4:
         	image.setImageResource(R.drawable.ic_launcher);
             break;
     }

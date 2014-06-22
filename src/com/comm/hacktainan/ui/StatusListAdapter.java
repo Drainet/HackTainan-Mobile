@@ -65,8 +65,8 @@ public class StatusListAdapter extends BaseAdapter{
 		holder.title.setText(statusList.get(position).TITLE);
 		holder.date.setText(statusList.get(position).DATE);
 		holder.description.setText(statusList.get(position).DESCRIPTION);
-		holder.likeButton.setImageResource(R.drawable.like_64);
-		holder.photo.setImageResource(R.drawable.friend_64);
+		//holder.likeButton.setImageResource(R.drawable.like_64);
+		//holder.photo.setImageResource(R.drawable.friend_64);
 		holder.profile.setVisibility(View.INVISIBLE);
 		holder.goodnum.setText(String.valueOf(statusList.get(position).PROGRESS)+"/"+String.valueOf(statusList.get(position).GOOD_NUMBER));
 		holder.progressbar.setMax(statusList.get(position).GOOD_NUMBER);

@@ -141,19 +141,26 @@ GooglePlayServicesClient.OnConnectionFailedListener
 					dialog.setTitle(questList.get(mid).TITLE);
 			        dialog.setMessage(questList.get(mid).DESCRIPTION);
 			        
-			        dialog.setPositiveButton("確定", new DialogInterface.OnClickListener() {  
-			            public void onClick(DialogInterface dialog, int which) {  
-			            	
-			            	Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+			        if( Math.abs(locationclient.getLastLocation().getLatitude()-questList.get(mmid).LATITUDE)<0.001 &&
+			        		Math.abs(locationclient.getLastLocation().getLongitude()-questList.get(mmid).LONGITUDE)<0.001
+			        		){
+			        	dialog.setPositiveButton("確定", new DialogInterface.OnClickListener() {  
+				            public void onClick(DialogInterface dialog, int which) {  
+				            	
+				            	Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
-			                fileUri = UriGenerater.getOutputMediaFileUri(1); // create a file to save the image
-			                intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri); // set the image file name
-			                
-			                // start the image capture Intent
-			                startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
-			                
-			            }  
-			        }); 
+				                fileUri = UriGenerater.getOutputMediaFileUri(1); // create a file to save the image
+				                intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri); // set the image file name
+				                
+				                // start the image capture Intent
+				                startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+				                
+				            }  
+				        }); 
+			        	
+			        }
+			        
+			        
 			        
 			        dialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
 			        	   public void onClick(DialogInterface dialog, int which) {
