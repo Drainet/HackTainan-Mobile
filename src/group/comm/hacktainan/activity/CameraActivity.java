@@ -119,13 +119,9 @@ public class CameraActivity extends Activity {
 			
 			
 
-			try{
-				iu.execute(fileUri.getPath()).get();
-			}catch(InterruptedException e){
-
-			}catch(ExecutionException e){
-
-			}
+		
+				iu.execute(fileUri.getPath());
+	
 			this.finish();
 			return true;
 		}
