@@ -8,7 +8,10 @@ import com.android.volley.Response;
 
 
 
+import com.android.volley.Response.Listener;
+
 import group.comm.hacktainan.application.HackTainanApplication;
+import group.comm.hacktainan.data.Quest;
 import group.comm.hacktainan.data.Status;
 
 public class RequestHelper {
@@ -20,10 +23,16 @@ public class RequestHelper {
 						errorListener);
 		HackTainanApplication.getRequestQueue().add(request);
 
-//		final QuestListRequest qRequest = new QuestListRequest(Request.Method.GET,
-//				Url, listener,
-//				errorListener);
-//		HackTainanApplication.getRequestQueue().add(request);
 	}
+	
+	public static void getQuestListFeed(String Url,final Listener<LinkedList<Quest>> listener, final Response.ErrorListener errorListener){
+		final QuestListRequest request = 
+				new QuestListRequest(Request.Method.GET,
+						Url, listener,
+						errorListener);
+		HackTainanApplication.getRequestQueue().add(request);
+
+	}
+	
 
 }

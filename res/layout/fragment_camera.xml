@@ -28,4 +28,12 @@
         android:layout_centerHorizontal="true"
         android:src="@drawable/com_facebook_profile_picture_blank_square" />
 
+    <ProgressBar
+        android:id="@+id/progressBar1"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true" />
+
 </RelativeLayout>

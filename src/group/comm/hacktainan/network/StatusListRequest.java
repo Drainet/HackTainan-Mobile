@@ -29,8 +29,10 @@ public class StatusListRequest extends ObjectListRequest<Status>{
 				js = (JSONObject) jsary.get(i);
 				Status status = new Status(
 						js.getString("name"),
+						js.getString("title"),
 						js.getString("date"),
 						js.getString("description"),
+						js.getString("url"),
 						js.getInt("progress"),
 						js.getInt("goodNumber")
 						);

@@ -23,13 +23,21 @@ public class QuestListRequest extends ObjectListRequest<Quest>{
 	LinkedList<Quest> processJSON(JSONObject json) {
 		LinkedList<Quest> questList = new LinkedList<Quest>();
 		try {
-			JSONArray jsAry = json.getJSONArray("quests");
+			JSONArray jsAry = json.getJSONArray("newtasks");
 			
 			for(int i = 0;i<jsAry.length();i++){
-				JSONObject jsobj = jsAry.getJSONObject(i);
-//				Quest quest = new Quest(jsobj.getInt("id"));
-				
-				
+				JSONObject js = jsAry.getJSONObject(i);
+			
+				Quest quest = new Quest(
+						js.getString("created_at"), 
+						js.getString("desc"), 
+						js.getInt("goalLikes"), 
+						js.getInt("id"), 
+						Double.valueOf(js.getString("lat")), 
+						Double.valueOf(js.getString("lng")), 
+						js.getString("title"), 
+						js.getString("updated_at"));
+				questList.add(quest);
 			}
 			
 

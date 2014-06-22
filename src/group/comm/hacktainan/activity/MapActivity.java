@@ -2,6 +2,9 @@ package group.comm.hacktainan.activity;
 
 import java.util.LinkedList;
 
+import com.android.volley.Response.ErrorListener;
+import com.android.volley.Response.Listener;
+import com.android.volley.VolleyError;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.location.LocationClient;
@@ -14,8 +17,10 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import group.comm.hacktainan.application.HackTainanApplication;
 import group.comm.hacktainan.camera.UriGenerater;
 import group.comm.hacktainan.data.*;
+import group.comm.hacktainan.network.RequestHelper;
 import group.comm.hacktainan.R;
 import android.app.ActionBar;
 import android.app.Activity;
@@ -45,13 +50,34 @@ GooglePlayServicesClient.OnConnectionFailedListener
 	
 	 private static GoogleMap map;
 	 private static LocationClient locationclient;
-	 private static LinkedList<Quest> questlist;
+	 private static LinkedList<Quest> questList;
 	 private static Location myLocation = null;
 	 private static Uri fileUri;
 	 private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
+	 private Integer mid;
 	 
 	 
-	 
+	 @Override
+		public void onActivityResult(int requestCode, int resultCode, Intent data) {
+			 
+		     if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
+		         if (resultCode == RESULT_OK) {
+		        	Intent intent = new Intent();
+		            intent.setClass(this, CameraActivity.class);
+		            intent.putExtra("fileuri", fileUri);
+		            intent.putExtra("QID",questList.get(mid).QID);
+		            startActivity(intent); 
+		            this.finish(); 
+		             
+		         } else if (resultCode == RESULT_CANCELED) {
+		             // User cancelled the image capture
+		        	 
+		         } else {
+		             // Image capture failed, advise user
+		        	 
+		         }
+		     }
+		 }
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -59,10 +85,12 @@ GooglePlayServicesClient.OnConnectionFailedListener
 		setContentView(R.layout.activity_map);
 		
 		locationclient = new LocationClient(this, this, this);
-		questlist = new LinkedList<Quest>();
-		questlist.add(new Quest(1,"圓環頂任務","在圓環頂耍gay",23.00,120.12));
-		questlist.add(new Quest(2,"地獄級任務","蒼穹雷霆宙斯",23.00,120.14));
+		questList = new LinkedList<Quest>();
+//		questlist.add(new Quest(1,"圓環頂任務","在圓環頂耍gay",23.00,120.12));
+//		questlist.add(new Quest(2,"地獄級任務","蒼穹雷霆宙斯",23.00,120.14));
 		
+		//context = this.getApplicationContext();
+		PlaceholderFragment fragment;
 		
 		ActionBar actionBar = getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
@@ -73,8 +101,74 @@ GooglePlayServicesClient.OnConnectionFailedListener
 		if (savedInstanceState == null) {
 			getFragmentManager().beginTransaction()
 					.add(R.id.container, new PlaceholderFragment()).commit();
+			//fragment = (PlaceholderFragment) getFragmentManager().findFragmentById(R.id.container);
 		}
+		
+		RequestHelper.getQuestListFeed("http://kalacoolhack.herokuapp.com/all/"+HackTainanApplication.getUser().getId()
+			, new Listener<LinkedList<Quest>>() {
+
+			@Override
+			public void onResponse(LinkedList<Quest> rquestList) {
+				questList = rquestList;
+				initialQuestMarker();
+			}
+		},new ErrorListener() {
+
+			@Override
+			public void onErrorResponse(VolleyError arg0) {
+				
+			}
+		});
 	}
+	
+	private void initialQuestMarker(){
+		
+    	for(int i=0;i<questList.size();i++){
+    		MarkerOptions marker = new MarkerOptions().position(new LatLng(questList.get(i).LATITUDE, questList.get(i).LONGITUDE)).title(String.valueOf(i));
+    		marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN));
+    		
+    		map.addMarker(marker);
+    		
+    		map.setOnMarkerClickListener(new OnMarkerClickListener(){
+    		    
+
+				@Override
+				public boolean onMarkerClick(Marker marker) {
+					
+					final Integer mmid = Integer.valueOf(marker.getTitle());
+					mid = mmid;
+					AlertDialog.Builder dialog = new AlertDialog.Builder(MapActivity.this);
+					dialog.setTitle(questList.get(mid).TITLE);
+			        dialog.setMessage(questList.get(mid).DESCRIPTION);
+			        
+			        dialog.setPositiveButton("確定", new DialogInterface.OnClickListener() {  
+			            public void onClick(DialogInterface dialog, int which) {  
+			            	
+			            	Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+			                fileUri = UriGenerater.getOutputMediaFileUri(1); // create a file to save the image
+			                intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri); // set the image file name
+			                
+			                // start the image capture Intent
+			                startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+			                
+			            }  
+			        }); 
+			        
+			        dialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+			        	   public void onClick(DialogInterface dialog, int which) {
+			        	    // TODO Auto-generated method stub
+			        		   dialog.dismiss();
+			        	   }
+		        	});
+			        
+			        dialog.show();
+					
+					return true;
+				}});
+    	}
+    	
+    }
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -107,26 +201,7 @@ GooglePlayServicesClient.OnConnectionFailedListener
 		
 		Context context;
 		
-		@Override
-		public void onActivityResult(int requestCode, int resultCode, Intent data) {
-			 
-		     if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
-		         if (resultCode == RESULT_OK) {
-		        	Intent intent = new Intent();
-		            intent.setClass(this.getActivity(), CameraActivity.class);
-		            intent.putExtra("fileuri", fileUri);
-		            startActivity(intent); 
-		            this.getActivity().finish(); 
-		             
-		         } else if (resultCode == RESULT_CANCELED) {
-		             // User cancelled the image capture
-		        	 
-		         } else {
-		             // Image capture failed, advise user
-		        	 
-		         }
-		     }
-		 }
+		
 
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -139,59 +214,14 @@ GooglePlayServicesClient.OnConnectionFailedListener
 			map.setMyLocationEnabled(true);
 			Log.i("LIE", String.valueOf(map.isMyLocationEnabled()) );
 			
-			initialQuestMarker();
+			
 
 		    
 			
 			return rootView;
 		}
 		
-		private void initialQuestMarker(){
-	    	for(int i=0;i<questlist.size();i++){
-	    		MarkerOptions marker = new MarkerOptions().position(new LatLng(questlist.get(i).LATITUDE, questlist.get(i).LONGITUDE)).title(String.valueOf(i));
-	    		marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN));
-	    		
-	    		map.addMarker(marker);
-	    		
-	    		map.setOnMarkerClickListener(new OnMarkerClickListener(){
-	    		    
-
-					@Override
-					public boolean onMarkerClick(Marker marker) {
-						Toast.makeText(context, String.valueOf(locationclient.getLastLocation().getLatitude()), Toast.LENGTH_SHORT).show();
-						
-						AlertDialog.Builder dialog = new AlertDialog.Builder(context);
-						dialog.setTitle(questlist.get(Integer.valueOf(marker.getTitle())).NAME);
-				        dialog.setMessage(questlist.get(Integer.valueOf(marker.getTitle())).CONTENT);
-				        
-				        dialog.setPositiveButton("確定", new DialogInterface.OnClickListener() {  
-				            public void onClick(DialogInterface dialog, int which) {  
-				            	
-				            	Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-				                fileUri = UriGenerater.getOutputMediaFileUri(1); // create a file to save the image
-				                intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri); // set the image file name
-
-				                // start the image capture Intent
-				                startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
-				                
-				            }  
-				        }); 
-				        
-				        dialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-				        	   public void onClick(DialogInterface dialog, int which) {
-				        	    // TODO Auto-generated method stub
-				        		   dialog.dismiss();
-				        	   }
-			        	});
-				        
-				        dialog.show();
-						
-						return true;
-					}});
-	    	}
-	    	
-	    }
+		
 	}
 
 	@Override

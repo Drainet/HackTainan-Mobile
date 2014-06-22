@@ -1,6 +1,15 @@
 package group.comm.hacktainan.activity;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.util.concurrent.ExecutionException;
+
+import org.apache.http.entity.mime.content.ContentBody;
+import org.apache.http.entity.mime.content.InputStreamBody;
 
 import group.comm.hacktainan.R;
 import group.comm.hacktainan.R.id;
@@ -11,7 +20,11 @@ import group.comm.hacktainan.network.ImageUploadRequest;
 import android.app.Activity;
 import android.app.ActionBar;
 import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.CompressFormat;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -21,13 +34,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.os.Build;
 
 public class CameraActivity extends Activity {
 
 	private static Uri fileUri;
+	private static Integer qid;
+	static private ProgressBar progressbar;
+	static private EditText editText;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +59,7 @@ public class CameraActivity extends Activity {
 		actionBar.setHomeButtonEnabled(true);
 		actionBar.setIcon(R.drawable.back_64);
 		fileUri=(Uri) this.getIntent().getExtras().get("fileuri");
+		qid= (Integer)this.getIntent().getExtras().get("QID");
 
 		//Toast.makeText(this, fileUri.toString(), Toast.LENGTH_SHORT).show();
 		//ViewGroup view = (ViewGroup) LayoutInflater.from(this).inflate(R.layout.cambar_view, null);
@@ -63,6 +83,7 @@ public class CameraActivity extends Activity {
 			.add(R.id.container, new PlaceholderFragment()).commit();
 		}
 	}
+	
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -81,10 +102,22 @@ public class CameraActivity extends Activity {
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		if (id == R.id.action_confirm) {
+			progressbar.setVisibility(View.VISIBLE);
+			String description = "Nice Day";
+			
+			if(editText!=null){
+				description =  editText.getText().toString();
+			}
+			
+				
+			
+			
 			ImageUploadRequest iu = new ImageUploadRequest()
 			.addPar("uid", HackTainanApplication.getUser().getId())
-			.addPar("content","")
-			.addPar("task_id","test");
+			.addPar("content",description)
+			.addPar("task_id",String.valueOf(qid));
+			
+			
 
 			try{
 				iu.execute(fileUri.getPath()).get();
@@ -93,6 +126,7 @@ public class CameraActivity extends Activity {
 			}catch(ExecutionException e){
 
 			}
+			this.finish();
 			return true;
 		}
 		else if (id == android.R.id.home) {
@@ -115,8 +149,15 @@ public class CameraActivity extends Activity {
 				Bundle savedInstanceState) {
 			View rootView = inflater.inflate(R.layout.fragment_camera,
 					container, false);
+			
 
 			ImageView image = (ImageView) rootView.findViewById(R.id.imageView1);
+			editText = (EditText)rootView.findViewById(R.id.editText1);
+			
+			progressbar = (ProgressBar) rootView.findViewById(R.id.progressBar1);
+			progressbar.setVisibility(View.INVISIBLE);
+			
+			
 			if(fileUri!=null){
 				image.setImageURI(fileUri);
 			}

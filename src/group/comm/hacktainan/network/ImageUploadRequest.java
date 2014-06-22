@@ -3,6 +3,7 @@ package group.comm.hacktainan.network;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 import java.util.LinkedList;
 
 import org.apache.http.HttpEntity;
@@ -40,7 +41,7 @@ public class ImageUploadRequest extends AsyncTask<String, Void, String> {
 			
 			for(PostPar postPar:postParList){
 				try {
-					mpEntity.addPart(postPar.NAME,new StringBody(postPar.VALUE));
+					mpEntity.addPart(postPar.NAME,new StringBody(postPar.VALUE,Charset.forName("UTF-8")));
 				} catch (UnsupportedEncodingException e1) {
 					e1.printStackTrace();
 				}

@@ -3,12 +3,14 @@ package group.comm.hacktainan.activity;
 
 import group.comm.hacktainan.R;
 import group.comm.hacktainan.application.HackTainanApplication;
+import group.comm.hacktainan.data.Status;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
+
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
@@ -26,13 +28,13 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import android.widget.Toast;
 
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.comm.hacktainan.ui.StatusListAdapter;
 import com.facebook.Request;
 import com.facebook.Response;
 import com.facebook.Session;
@@ -41,8 +43,10 @@ import com.facebook.model.GraphUser;
 
 import android.view.View.OnClickListener;
 import android.support.v4.widget.DrawerLayout;
+import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -172,9 +176,13 @@ implements NavigationDrawerFragment.NavigationDrawerCallbacks {
             public void onClick(View v) {
             			//Toast.(this, "Example action.", Toast.LENGTH_SHORT).show();
             			//Toast.makeText(MainActivity.this, "Example action.", Toast.LENGTH_SHORT).show();
-		            	Intent intent = new Intent();
-		            	intent.setClass(MainActivity.this, MapActivity.class);
-		            	startActivity(intent); 
+            			if(HackTainanApplication.getUser()!=null){
+			            	Intent intent = new Intent();
+			            	intent.setClass(MainActivity.this, MapActivity.class);
+			            	startActivity(intent);
+            			}else{
+            				Toast.makeText(MainActivity.this, "FB登入失敗", Toast.LENGTH_SHORT).show();
+            			}
 		            	//MainActivity.this.finish(); 
                    }
         };
@@ -236,9 +244,37 @@ implements NavigationDrawerFragment.NavigationDrawerCallbacks {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
+        	LinkedList<Status> statusList = new LinkedList<Status>();
+        	statusList.add(new Status(
+        			"狗狗",
+        			"貓貓",
+        			"1992/232",
+        			"我是gay",
+        			"urlllll",
+        			3,
+        			10));
+        	statusList.add(new Status(
+        			"嘟嘟轄",
+        			"去喇比瑞亞吃大便",
+        			"1992/232/11",
+        			"我是yag\n 嘟嘟狗",
+        			"llur",
+        			10,
+        			10));
+        	statusList.add(new Status(
+        			"嘟嘟轄",
+        			"去喇比瑞亞吃大便",
+        			"1992/232/11",
+        			"我是yag\n 嘟嘟狗",
+        			"llur",
+        			15,
+        			10));
+        	StatusListAdapter adapter = new StatusListAdapter(getActivity(),statusList);
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            textView.setText(Integer.toString(getArguments().getInt(ARG_SECTION_NUMBER)));
+            ListView listview = (ListView) rootView.findViewById(R.id.listView1);
+            listview.setAdapter(adapter);
+            //TextView textView = (TextView) rootView.findViewById(R.id.section_label);
+            //textView.setText(Integer.toString(getArguments().getInt(ARG_SECTION_NUMBER)));
             return rootView;
         }
 
