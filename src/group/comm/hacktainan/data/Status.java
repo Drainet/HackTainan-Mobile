@@ -1,20 +1,32 @@
 package group.comm.hacktainan.data;
 
 public final class Status {
+	public final Integer ID;
 	public final String NAME;
-	public final String TITLE;
 	public final String DATE;
-	public final String DESCRIPTION;
-	public final String IMAGE_URL;
-	public final Integer PROGRESS;
-	public final Integer GOOD_NUMBER;
-	public Status(String name,String title,String date,String description,String imageURL,Integer progress,Integer goodNumber){
+	public final String TITLE;
+	public final String CONTENT;
+	public final String IMAGE;
+	public Integer LIKES;
+	public final Integer GOAL;
+	public Status(
+			Integer id,
+			String name,
+			String date,
+			String title,
+			String content,
+			String image,
+			Integer likes,
+			Integer goal){
+		ID = id;
 		NAME = name;
-		TITLE = title;
 		DATE = date;
-		DESCRIPTION = description;
-		IMAGE_URL = imageURL;
-		PROGRESS = progress;
-		GOOD_NUMBER = goodNumber;
+		TITLE = title;
+		CONTENT = content;
+		IMAGE = image;
+		LIKES = likes;
+		GOAL = goal;
+		
+
 	}
 }

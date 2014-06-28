@@ -5,6 +5,7 @@ import group.comm.hacktainan.R;
 import group.comm.hacktainan.application.HackTainanApplication;
 import group.comm.hacktainan.data.Status;
 import group.comm.hacktainan.mywidget.RoundedImageView;
+import group.comm.hacktainan.network.RequestHelper;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -17,6 +18,7 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
@@ -34,7 +36,9 @@ import android.widget.Toast;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader.ImageListener;
 import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.ImageLoader.ImageContainer;
 import com.comm.hacktainan.ui.StatusListAdapter;
 import com.facebook.Request;
 import com.facebook.Response;
@@ -57,6 +61,7 @@ implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 	/**
 	 * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
 	 */
+	public static RoundedImageView image;
 	private NavigationDrawerFragment mNavigationDrawerFragment;
 
 	/**
@@ -124,11 +129,29 @@ implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 											map.put("uid", String.valueOf(user.getId()));
 											map.put("name", user.getName());
 											map.put("token", Session.getActiveSession().getAccessToken());
+											map.put("provider","facebook");
 											//										map.put("expiration", sdFormat.format(Session.getActiveSession().getExpirationDate()));
 											return map;
 										};
 									});
 								}
+								
+								
+								
+								HackTainanApplication.getImageLoader().get("http://graph.facebook.com/"+user.getId()+"/picture?type=large", new ImageListener() {
+									
+									@Override
+									public void onErrorResponse(VolleyError arg0) {
+										// TODO Auto-generated method stub
+										
+									}
+									
+									@Override
+									public void onResponse(ImageContainer arg0, boolean arg1) {
+										//image.setImageBitmap(arg0.getBitmap());
+										
+									}
+								});
 							}}
 					}).executeAsync();
 				}
@@ -148,6 +171,10 @@ implements NavigationDrawerFragment.NavigationDrawerCallbacks {
         fragmentManager.beginTransaction()
                 .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
                 .commit();
+        
+        
+        
+       
     }
 
     public void onSectionAttached(int number) {
@@ -212,9 +239,9 @@ implements NavigationDrawerFragment.NavigationDrawerCallbacks {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -227,6 +254,7 @@ implements NavigationDrawerFragment.NavigationDrawerCallbacks {
          * fragment.
          */
         private static final String ARG_SECTION_NUMBER = "section_number";
+        private static PlaceholderFragment instance;
 
         /**
          * Returns a new instance of this fragment for the given section
@@ -237,9 +265,15 @@ implements NavigationDrawerFragment.NavigationDrawerCallbacks {
             Bundle args = new Bundle();
             args.putInt(ARG_SECTION_NUMBER, sectionNumber);
             fragment.setArguments(args);
+            instance = fragment;
             return fragment;
         }
+        
+        public static PlaceholderFragment getInstance(){
+        	return instance;
+        }
 
+		
         public PlaceholderFragment() {
         }
 
@@ -249,47 +283,61 @@ implements NavigationDrawerFragment.NavigationDrawerCallbacks {
         	
         	
         	LinkedList<Status> statusList = new LinkedList<Status>();
-        	statusList.add(new Status(
-        			"狗狗",
-        			"貓貓",
-        			"1992/232",
-        			"我是gay",
-        			"urlllll",
-        			3,
-        			10));
-        	statusList.add(new Status(
-        			"嘟嘟轄",
-        			"去喇比瑞亞吃大便",
-        			"1992/232/11",
-        			"我是yag\n 嘟嘟狗",
-        			"llur",
-        			10,
-        			10));
-        	statusList.add(new Status(
-        			"嘟嘟轄",
-        			"去喇比瑞亞吃大便",
-        			"1992/232/11",
-        			"我是yag\n 嘟嘟狗",
-        			"llur",
-        			15,
-        			10));
+
         	StatusListAdapter adapter = new StatusListAdapter(getActivity(),statusList);
         	View rootView;
         	if(getArguments().getInt(ARG_SECTION_NUMBER)==1){
         		rootView = inflater.inflate(R.layout.homepage, container, false);
-        		
+        		image =(RoundedImageView) rootView.findViewById(R.id.imageView1);
+        		//image.setImageResource(R.drawable.back_64);
+        		//image.setImageDrawable(R.drawable.back_64);
         	}else{
         		rootView = inflater.inflate(R.layout.fragment_main, container, false);
         	}
-            
-            ListView listview = (ListView) rootView.findViewById(R.id.listView1);
+            final Context context =  this.getActivity();
+            final ListView listview = (ListView) rootView.findViewById(R.id.listView1);
             switch(getArguments().getInt(ARG_SECTION_NUMBER)){
             
             case 2:
-            	listview.setAdapter(adapter);
+            	if(HackTainanApplication.getUser()!=null)
+            	 RequestHelper.getStatusListFeed("http://kalacoolhack.herokuapp.com/all/"+HackTainanApplication.getUser().getId(), new Listener<LinkedList<Status>>() {
+
+         			@Override
+         			public void onResponse(LinkedList<Status> arg0) {
+         				// TODO Auto-generated method stub
+         				StatusListAdapter adapter = new StatusListAdapter(context ,arg0);
+         				listview.setAdapter(adapter);
+         			}
+         		}, new ErrorListener() {
+
+         			@Override
+         			public void onErrorResponse(VolleyError arg0) {
+         				// TODO Auto-generated method stub
+         				
+         			}
+         		});
+            	
                 break;
             case 3:
-            	listview.setAdapter(adapter);
+            	if(HackTainanApplication.getUser()!=null)
+            	 RequestHelper.getStatusListFeed("http://kalacoolhack.herokuapp.com/all/stranger/"+HackTainanApplication.getUser().getId(), new Listener<LinkedList<Status>>() {
+
+         			@Override
+         			public void onResponse(LinkedList<Status> arg0) {
+         				// TODO Auto-generated method stub
+         				StatusListAdapter adapter = new StatusListAdapter(context ,arg0);
+         				listview.setAdapter(adapter);
+         				
+         			}
+         		}, new ErrorListener() {
+
+         			@Override
+         			public void onErrorResponse(VolleyError arg0) {
+         				// TODO Auto-generated method stub
+         				
+         			}
+         		});
+            	
                 break;
             case 4:
                 
@@ -302,6 +350,7 @@ implements NavigationDrawerFragment.NavigationDrawerCallbacks {
             //textView.setText(Integer.toString(getArguments().getInt(ARG_SECTION_NUMBER)));
             return rootView;
         }
+        
 
         @Override
         public void onAttach(Activity activity) {

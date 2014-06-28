@@ -22,27 +22,25 @@ public class StatusListRequest extends ObjectListRequest<Status>{
 	LinkedList<Status> processJSON(JSONObject jsonObject) {
 		LinkedList<Status> statusList = new LinkedList<Status>();
 		try {
-			JSONArray jsary = jsonObject.getJSONArray("ary");
+			JSONArray jsary = jsonObject.getJSONArray("aticles");
 			for(int i = 0;i<jsary.length();i++){
 				JSONObject js;
 
 				js = (JSONObject) jsary.get(i);
 				Status status = new Status(
-						js.getString("name"),
-						js.getString("title"),
-						js.getString("date"),
-						js.getString("description"),
-						js.getString("url"),
-						js.getInt("progress"),
-						js.getInt("goodNumber")
-						);
+						js.getInt("id"),
+						js.getString("name"), 
+						js.getString("date"), 
+						js.getString("title"), 
+						js.getString("content"), 
+						js.getString("image"), 
+						js.getInt("likes"), 
+						js.getInt("goal"));
 				statusList.add(status);
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-
-
 		return statusList;
 	}
 

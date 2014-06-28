@@ -141,9 +141,9 @@ GooglePlayServicesClient.OnConnectionFailedListener
 					dialog.setTitle(questList.get(mid).TITLE);
 			        dialog.setMessage(questList.get(mid).DESCRIPTION);
 			        
-			        if( Math.abs(locationclient.getLastLocation().getLatitude()-questList.get(mmid).LATITUDE)<0.001 &&
-			        		Math.abs(locationclient.getLastLocation().getLongitude()-questList.get(mmid).LONGITUDE)<0.001
-			        		){
+			        //if( Math.abs(locationclient.getLastLocation().getLatitude()-questList.get(mmid).LATITUDE)<0.08 &&
+			        	//	Math.abs(locationclient.getLastLocation().getLongitude()-questList.get(mmid).LONGITUDE)<0.08
+			        		//){
 			        	dialog.setPositiveButton("½T©w", new DialogInterface.OnClickListener() {  
 				            public void onClick(DialogInterface dialog, int which) {  
 				            	
@@ -158,7 +158,7 @@ GooglePlayServicesClient.OnConnectionFailedListener
 				            }  
 				        }); 
 			        	
-			        }
+			        //}
 			        
 			        
 			        

@@ -76,7 +76,10 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
+            android:adjustViewBounds="true"
             android:fitsSystemWindows="false"
+            android:maxHeight="140dp"
+            android:maxWidth="140dp"
             android:scaleType="centerCrop"
             android:src="@drawable/com_facebook_profile_picture_blank_square" />
 

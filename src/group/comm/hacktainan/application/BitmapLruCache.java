@@ -32,7 +32,7 @@ final class BitmapLruCache extends LruCache<String, Bitmap> implements ImageLoad
 
 	@Override
 	public void putBitmap(final String url, final Bitmap bitmap) {
-		put(url, getResizedBitmap(bitmap,60));
+		put(url, getResizedBitmap(bitmap,300));
 	}
 
 	private Bitmap getResizedBitmap(Bitmap image, int maxSize) {
